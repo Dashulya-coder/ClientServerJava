@@ -1,3 +1,5 @@
+package protocol;
+
 public class Message {
 
     private final int commandType;
@@ -16,7 +18,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{commandType=0x" + String.format("%08X", commandType) +
+        return "protocol.Message{commandType=0x" + String.format("%08X", commandType) +
                 ", userId=" + userId + ", payload='" + payload + "'}";
     }
 

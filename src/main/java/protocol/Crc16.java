@@ -1,3 +1,5 @@
+package protocol;
+
 public class Crc16 {
 
     private static final int POLYNOMIAL = 0x8005;

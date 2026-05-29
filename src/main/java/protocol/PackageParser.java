@@ -1,3 +1,5 @@
+package protocol;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -15,7 +17,7 @@ public class PackageParser {
     public Package parse(byte[] raw) throws Exception {
         if (raw == null || raw.length < HEADER_SIZE + 2) {
             throw new IllegalArgumentException(
-                    "Package too short: " + (raw == null ? 0 : raw.length));
+                    "protocol.Package too short: " + (raw == null ? 0 : raw.length));
         }
 
         if (raw[0] != Package.MAGIC) {
@@ -35,7 +37,7 @@ public class PackageParser {
         int expectedTotal = BODY_OFFSET + bodyLen + 2;
         if (raw.length < expectedTotal) {
             throw new IllegalArgumentException(
-                    "Package too short: got " + raw.length + ", expected " + expectedTotal);
+                    "protocol.Package too short: got " + raw.length + ", expected " + expectedTotal);
         }
 
         int storedHeaderCrc = ((raw[14] & 0xFF) << 8) | (raw[15] & 0xFF);
@@ -67,7 +69,7 @@ public class PackageParser {
 
     private Message parseMessage(byte[] body) {
         if (body.length < 8) {
-            throw new IllegalArgumentException("Message body too short: " + body.length);
+            throw new IllegalArgumentException("protocol.Message body too short: " + body.length);
         }
         ByteBuffer buf = ByteBuffer.wrap(body);
         int commandType = buf.getInt(0);

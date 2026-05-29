@@ -1,3 +1,5 @@
+package protocol;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 

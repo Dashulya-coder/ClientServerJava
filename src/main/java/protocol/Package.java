@@ -1,3 +1,5 @@
+package protocol;
+
 public class Package {
 
     public static final byte MAGIC = 0x13;
@@ -18,7 +20,7 @@ public class Package {
 
     @Override
     public String toString() {
-        return "Package{clientId=" + (clientId & 0xFF) +
+        return "protocol.Package{clientId=" + (clientId & 0xFF) +
                 ", packageId=" + packetId +
                 ", message=" + message + "}";
     }
