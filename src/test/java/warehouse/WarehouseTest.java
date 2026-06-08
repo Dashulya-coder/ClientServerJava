@@ -121,7 +121,6 @@ class WarehouseTest {
             latch.await(5, TimeUnit.SECONDS);
             executor.shutdown();
 
-            // Apple starts at 100, 10 threads add 10 each = 100 + 100 = 200
             assertEquals(200, warehouse.getQuantity("Apple"));
         }
 
@@ -148,7 +147,6 @@ class WarehouseTest {
             latch.await(5, TimeUnit.SECONDS);
             executor.shutdown();
 
-            // Banana starts at 50, only 2 threads can reduce by 20 without going below 0
             assertTrue(warehouse.getQuantity("Banana") >= 0);
         }
 
