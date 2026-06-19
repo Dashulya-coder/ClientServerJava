@@ -29,7 +29,7 @@ class PipelineTest {
         warehouse = new Warehouse();
         warehouse.addProduct(new Product("Apple", new AtomicInteger(100), 10, "Fruits"));
         warehouse.addProduct(new Product("Banana", new AtomicInteger(50), 5, "Fruits"));
-        pipeline = new Pipeline(warehouse, TEST_KEY);
+        pipeline = new Pipeline(warehouse, TEST_KEY, 1, 1, 1, 1, 1);
     }
 
     @AfterEach
@@ -70,5 +70,21 @@ class PipelineTest {
 
         assertTrue(warehouse.getQuantity("Apple") >= 0);
         assertTrue(warehouse.getQuantity("Banana") >= 0);
+    }
+
+    @Test
+    @DisplayName("scaled pipeline: 2 receivers, 2 decryptors, 4 processors, 3 encryptors, 5 senders")
+    void pipeline_scaled_startsAndStopsCleanly() throws InterruptedException {
+        Warehouse scaledWarehouse = new Warehouse();
+        scaledWarehouse.addProduct(new Product("Apple", new AtomicInteger(1000), 10, "Fruits"));
+        scaledWarehouse.addProduct(new Product("Banana", new AtomicInteger(1000), 5, "Fruits"));
+
+        Pipeline scaled = new Pipeline(scaledWarehouse, TEST_KEY, 2, 2, 4, 3, 5);
+        scaled.start();
+        Thread.sleep(500);
+        scaled.stop();
+
+        assertTrue(scaledWarehouse.getQuantity("Apple") >= 0);
+        assertTrue(scaledWarehouse.getQuantity("Banana") >= 0);
     }
 }

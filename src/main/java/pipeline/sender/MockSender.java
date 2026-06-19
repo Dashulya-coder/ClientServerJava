@@ -2,6 +2,7 @@ package pipeline.sender;
 
 import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class MockSender implements Sender, Runnable {
 
@@ -21,8 +22,8 @@ public class MockSender implements Sender, Runnable {
     public void run() {
         while (running) {
             try {
-                byte[] message = inQueue.take();
-                send(message, null);
+                byte[] message = inQueue.poll(100, TimeUnit.MILLISECONDS);
+                if (message != null) send(message, null);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

@@ -6,6 +6,7 @@ import protocol.Package;
 import warehouse.Warehouse;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class ProcessorWorker implements Processor, Runnable {
 
@@ -72,8 +73,8 @@ public class ProcessorWorker implements Processor, Runnable {
     public void run() {
         while (running) {
             try {
-                Package pkg = inQueue.take();
-                process(pkg.getMessage());
+                Package pkg = inQueue.poll(100, TimeUnit.MILLISECONDS);
+                if (pkg != null) process(pkg.getMessage());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

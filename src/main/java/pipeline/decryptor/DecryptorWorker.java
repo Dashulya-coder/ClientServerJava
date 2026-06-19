@@ -4,6 +4,7 @@ import protocol.Package;
 import protocol.PackageParser;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class DecryptorWorker implements Decryptor, Runnable {
 
@@ -36,8 +37,8 @@ public class DecryptorWorker implements Decryptor, Runnable {
     public void run() {
         while (running) {
             try {
-                byte[] raw = inQueue.take();
-                decrypt(raw);
+                byte[] raw = inQueue.poll(100, TimeUnit.MILLISECONDS);
+                if (raw != null) decrypt(raw);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

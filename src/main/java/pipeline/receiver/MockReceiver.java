@@ -1,7 +1,7 @@
 package pipeline.receiver;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.function.Supplier;
+import java.util.concurrent.TimeUnit;
 
 public class MockReceiver implements Receiver, Runnable {
 
@@ -18,7 +18,9 @@ public class MockReceiver implements Receiver, Runnable {
     public void receiveMessage() {
         byte[] message = messageSource.generate();
         try {
-            queue.put(message);
+            while (running && !queue.offer(message, 100, TimeUnit.MILLISECONDS)) {
+
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

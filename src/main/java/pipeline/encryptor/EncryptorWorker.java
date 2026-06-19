@@ -4,6 +4,7 @@ import protocol.Message;
 import protocol.PackageBuilder;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class EncryptorWorker implements Encryptor, Runnable {
@@ -35,9 +36,11 @@ public class EncryptorWorker implements Encryptor, Runnable {
     public void run() {
         while (running) {
             try {
-                Message message = inQueue.take();
-                byte[] encrypted = encrypt(message);
-                outQueue.put(encrypted);
+                Message message = inQueue.poll(100, TimeUnit.MILLISECONDS);
+                if (message != null) {
+                    byte[] encrypted = encrypt(message);
+                    outQueue.put(encrypted);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
