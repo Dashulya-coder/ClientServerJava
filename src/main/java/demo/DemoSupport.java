@@ -7,7 +7,6 @@ import warehouse.Warehouse;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-// Shared key, sample warehouse and message helpers for the TCP/UDP demos.
 public final class DemoSupport {
 
     public static final byte[] KEY = {
@@ -17,7 +16,6 @@ public final class DemoSupport {
             0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20
     };
 
-    // 5000/5001 are often taken on macOS (AirPlay Receiver), so use 6000/6001.
     public static final int TCP_PORT = 6000;
     public static final int UDP_PORT = 6001;
 
