@@ -1,0 +1,46 @@
+package demo;
+
+import pipeline.CommandType;
+import protocol.Message;
+import warehouse.Product;
+import warehouse.Warehouse;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+// Shared key, sample warehouse and message helpers for the TCP/UDP demos.
+public final class DemoSupport {
+
+    public static final byte[] KEY = {
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+            0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
+            0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20
+    };
+
+    // 5000/5001 are often taken on macOS (AirPlay Receiver), so use 6000/6001.
+    public static final int TCP_PORT = 6000;
+    public static final int UDP_PORT = 6001;
+
+    private DemoSupport() {
+    }
+
+    public static Warehouse sampleWarehouse() {
+        Warehouse warehouse = new Warehouse();
+        warehouse.addProduct(new Product("Apple", new AtomicInteger(1000), 10, "Fruits"));
+        warehouse.addProduct(new Product("Banana", new AtomicInteger(1000), 5, "Fruits"));
+        warehouse.addProduct(new Product("Orange", new AtomicInteger(1000), 8, "Fruits"));
+        return warehouse;
+    }
+
+    public static Message get(String product) {
+        return new Message(CommandType.GET_QUANTITY.ordinal(), 0, product + ":0");
+    }
+
+    public static Message add(String product, int amount, int userId) {
+        return new Message(CommandType.ADD_QUANTITY.ordinal(), userId, product + ":" + amount);
+    }
+
+    public static Message reduce(String product, int amount, int userId) {
+        return new Message(CommandType.REDUCE_QUANTITY.ordinal(), userId, product + ":" + amount);
+    }
+}
