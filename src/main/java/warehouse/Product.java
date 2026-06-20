@@ -3,6 +3,8 @@ package warehouse;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Product {
+
+    private Integer id;  //primary key
     private final String name;
     private AtomicInteger quantity;
     private volatile int price;
@@ -13,6 +15,12 @@ public class Product {
         this.quantity = quantity;
         this.price = price;
         this.group = group;
+    }
+    public Integer getId(){
+        return id;
+    }
+    public void setId(Integer id){
+        this.id = id;
     }
     public String getName(){
         return name;
