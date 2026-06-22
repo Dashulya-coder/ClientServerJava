@@ -71,6 +71,21 @@ public abstract class JdbcProductRepository implements ProductRepository, AutoCl
     }
 
     @Override
+    public synchronized Optional<Product> findByName(String name) {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM product WHERE name = ?")) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(map(rs));
+                }
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't find product by name: " + name, e);
+        }
+    }
+
+    @Override
     public synchronized boolean update(Product product) {
         if (product.getId() == null) {
             throw new IllegalArgumentException("Product id is required for update");

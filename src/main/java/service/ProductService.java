@@ -28,6 +28,10 @@ public class ProductService {
         return repository.read(id);
     }
 
+    public Optional<Product> findByName(String name) {
+        return repository.findByName(name);
+    }
+
     public boolean update(int id, String name, int quantity, int price, String category) {
         validateName(name);
         validateQuantity(quantity);

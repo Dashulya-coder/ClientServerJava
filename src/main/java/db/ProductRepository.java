@@ -13,6 +13,8 @@ public interface ProductRepository {
 
     Optional<Product> read(int id);
 
+    Optional<Product> findByName(String name);
+
     // edit by id
     boolean update(Product product);
 
