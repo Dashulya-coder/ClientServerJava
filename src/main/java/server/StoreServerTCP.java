@@ -32,8 +32,13 @@ public class StoreServerTCP {
     private Thread acceptThread;
 
     public StoreServerTCP(int port, Warehouse warehouse, byte[] key) {
+        this(port, warehouse, key, null);
+    }
+
+    public StoreServerTCP(int port, Warehouse warehouse, byte[] key,
+                          service.ProductService productService) {
         this.requestedPort = port;
-        this.handler = new RequestHandler(warehouse);
+        this.handler = new RequestHandler(warehouse, productService);
         CryptoService crypto = new CryptoService(key);
         this.builder = new PackageBuilder(crypto);
         this.parser = new PackageParser(crypto);

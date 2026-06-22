@@ -36,12 +36,17 @@ public class StoreServerUDP {
     private Thread receiveThread;
 
     public StoreServerUDP(int port, Warehouse warehouse, byte[] key) {
-        this(port, warehouse, key, 0.0);
+        this(port, warehouse, key, 0.0, null);
     }
 
     public StoreServerUDP(int port, Warehouse warehouse, byte[] key, double lossProbability) {
+        this(port, warehouse, key, lossProbability, null);
+    }
+
+    public StoreServerUDP(int port, Warehouse warehouse, byte[] key,
+                          double lossProbability, service.ProductService productService) {
         this.requestedPort = port;
-        this.handler = new RequestHandler(warehouse);
+        this.handler = new RequestHandler(warehouse, productService);
         CryptoService crypto = new CryptoService(key);
         this.builder = new PackageBuilder(crypto);
         this.parser = new PackageParser(crypto);
